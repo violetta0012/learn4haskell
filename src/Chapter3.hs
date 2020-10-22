@@ -344,6 +344,14 @@ of a book, but you are not limited only by the book properties we described.
 Create your own book type of your dreams!
 -}
 
+data Book = MkBook
+    { bookName          :: String
+    , bookAuthor        :: String
+    , bookPagesCount    :: Int
+    , bookChaptersCount :: Int
+    , bookDescription   :: String
+    } deriving (Show)
+
 {- |
 =⚔️= Task 2
 
