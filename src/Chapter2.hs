@@ -189,7 +189,7 @@ to guess first, what you will see.
 [10,2,3,1,5]
 
 >>> [] ++ [1, 4]  -- [] is an empty list
-[1, 4]
+[1,4]
 
 >>> 3 : [1, 2]
 [3,1,2]
@@ -348,7 +348,7 @@ from it!
 ghci> :l src/Chapter2.hs
 -}
 subList :: Int -> Int -> [a] -> [a]
-subList start stop list = if stop < start then [] else
+subList start stop list = if stop < start || start < 0 then [] else
     take (stop - start + 1) (drop start list)
 
 {- |
@@ -639,7 +639,7 @@ Write a function that takes elements of a list only on even positions.
 takeEven :: [a] -> [a]
 takeEven [] = []
 takeEven [x] = [x]
-takeEven (x:y:xs) = x : takeEven xs
+takeEven (x:_:xs) = x : takeEven xs
 
 {- |
 =🛡= Higher-order functions
@@ -861,7 +861,10 @@ list.
 
 🕯 HINT: Use the 'cycle' function
 -}
-rotate = error "rotate: Not implemented!"
+rotate :: Int -> [a] -> [a]
+rotate n l = if n < 0 then [] else take len (drop n (cycle l))
+  where
+    len = length l
 
 {- |
 =💣= Task 12*
@@ -877,8 +880,13 @@ and reverses it.
   function, but in this task, you need to implement it manually. No
   cheating!
 -}
-rewind = error "rewind: Not Implemented!"
 
+rewind :: [a] -> [a]
+rewind = go []
+  where
+    go :: [a] -> [a] -> [a]
+    go res [] = res
+    go res (x:xs) = go (x:res) xs
 
 {-
 You did it! Now it is time to open pull request with your changes
