@@ -382,6 +382,25 @@ after the fight. The battle has the following possible outcomes:
 
 -}
 
+data Knight = MkKnight
+    { knightHealth :: Int
+    , knightAttack :: Int
+    , knightGold   :: Int
+    } deriving (Show)
+
+data Monster = MkMonster
+    { monsterHealth :: Int
+    , monsterAttack :: Int
+    , monsterGold   :: Int
+    } deriving (Show)
+
+knightFightsMonster :: Monster -> Knight -> Int
+knightFightsMonster monster knight
+    | monsterHealth monster < knightAttack knight
+      = knightGold knight + monsterGold monster
+    | knightHealth knight < monsterAttack monster = -1
+    | otherwise = knightGold knight
+
 {- |
 =🛡= Sum types
 
