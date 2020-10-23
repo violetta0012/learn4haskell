@@ -396,9 +396,9 @@ data Monster = MkMonster
 
 knightFightsMonster :: Monster -> Knight -> Int
 knightFightsMonster monster knight
-    | monsterHealth monster < knightAttack knight
-      = knightGold knight + monsterGold monster
-    | knightHealth knight < monsterAttack monster = -1
+    | monsterHealth monster <= knightAttack knight
+        = knightGold knight + monsterGold monster
+    | knightHealth knight <= monsterAttack monster = -1
     | otherwise = knightGold knight
 
 {- |
@@ -487,6 +487,16 @@ Create a simple enumeration for the meal types (e.g. breakfast). The one who
 comes up with the most number of names wins the challenge. Use your creativity!
 -}
 
+data Meal
+    = Breakfast
+    | SecondBreakfast
+    | Brunch
+    | Lunch
+    | Dinner
+    | Snack
+    | Tea
+    | LateNightMeal
+
 {- |
 =⚔️= Task 4
 
@@ -506,6 +516,55 @@ After defining the city, implement the following functions:
    complicated task, walls can be built only if the city has a castle
    and at least 10 living __people__ inside in all houses of the city totally.
 -}
+
+data Castle
+    = NoCastle
+    | Castle String
+    | CastleWithWall String
+    deriving (Show)
+
+data EduBuilding
+    = Church
+    | Library
+    deriving (Show)
+
+data House
+    = OnePerson
+    | TwoPeople
+    | ThreePeople
+    | FourPeople
+    deriving (Show)
+
+data MagicalCity = MkCity
+    { cityCastle   :: Castle
+    , cityBuilding :: EduBuilding
+    , cityHouses   :: [House]
+    } deriving (Show)
+
+buildCastle :: MagicalCity -> String -> MagicalCity
+buildCastle city castleName = case cityCastle city of
+    CastleWithWall _ -> city { cityCastle = CastleWithWall castleName }
+    _ -> city { cityCastle = Castle castleName }
+
+buildHouse :: MagicalCity -> House -> MagicalCity
+buildHouse city house = city { cityHouses = house : cityHouses city }
+
+buildWalls :: MagicalCity -> MagicalCity
+buildWalls city = case cityCastle city of
+    Castle name -> if countCitizens (cityHouses city) >= 10
+      then city { cityCastle = CastleWithWall name } else city
+        where
+        countCitizensInHouse :: House -> Int
+        countCitizensInHouse OnePerson = 1
+        countCitizensInHouse TwoPeople = 2
+        countCitizensInHouse ThreePeople = 3
+        countCitizensInHouse FourPeople = 4
+
+        countCitizens :: [House] -> Int
+        countCitizens [] = 0
+        countCitizens (x:xs) = countCitizensInHouse x + countCitizens xs
+
+    _ -> city
 
 {-
 =🛡= Newtypes
