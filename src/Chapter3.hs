@@ -1017,6 +1017,22 @@ Implement instances of "Append" for the following types:
 class Append a where
     append :: a -> a -> a
 
+newtype Gold = MkGold Int
+
+instance Append Gold where
+  append :: Gold -> Gold -> Gold
+  append (MkGold x) (MkGold y) = MkGold (x + y)
+
+instance Append [a] where
+  append :: [a] -> [a] -> [a]
+  append xs ys = xs ++ ys
+
+instance (Append a) => Append (Maybe a) where
+  append :: Maybe a -> Maybe a -> Maybe a
+  append Nothing Nothing = Nothing
+  append Nothing (Just x) = Just x
+  append (Just x) Nothing = Just x
+  append (Just x) (Just y) = Just (append x y)
 
 {-
 =🛡= Standard Typeclasses and Deriving
