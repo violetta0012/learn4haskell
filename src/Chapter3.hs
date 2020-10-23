@@ -1094,6 +1094,31 @@ implement the following functions:
 🕯 HINT: to implement this task, derive some standard typeclasses
 -}
 
+data DayOfWeek
+  = Monday
+  | Tuesday
+  | Wednesday
+  | Thursday
+  | Friday
+  | Saturday
+  | Sunday
+  deriving (Show, Read, Enum, Bounded, Eq, Ord)
+
+isWeekend :: DayOfWeek -> Bool
+isWeekend day
+  | day == Saturday || day == Sunday = True
+  | otherwise = False
+
+nextDay :: DayOfWeek -> DayOfWeek
+nextDay day
+  | day == maxBound = minBound
+  | otherwise = succ day
+
+daysToParty :: DayOfWeek -> Int
+daysToParty day
+  | day <= Friday = fromEnum Friday - fromEnum day
+  | otherwise = fromEnum Friday - fromEnum day + 7
+
 {-
 =💣= Task 9*
 
