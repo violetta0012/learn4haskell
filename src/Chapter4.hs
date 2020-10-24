@@ -314,6 +314,11 @@ data List a
     = Empty
     | Cons a (List a)
 
+instance Functor List where
+    fmap :: (a -> b) -> List a -> List b
+    fmap _ Empty = Empty
+    fmap f (Cons a as) = Cons (f a) (fmap f as)
+
 {- |
 =🛡= Applicative
 
