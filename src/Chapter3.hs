@@ -1154,6 +1154,35 @@ Implement data types and typeclasses, describing such a battle between two
 contestants, and write a function that decides the outcome of a fight!
 -}
 
+data MonsterAction
+    = MonsterAttack9
+    | RunAway9
+      deriving (Show, Read)
+
+data KnightAction
+    = KnightAttack9
+    | DrinkHealthPotion9
+    | CastDefensiveSpell9
+      deriving (Show, Read)
+
+newtype Health9  = MkHealth9 Int deriving (Show, Read)
+newtype Attack9  = MkAttack9 Int deriving (Show, Read)
+newtype Defence9 = MkDefence9 Int deriving (Show, Read)
+
+data Knight9 = MkKnight9
+    { knightName9    :: String
+    , knightHealth9  :: Health9
+    , knightAttack9  :: Attack9
+    , knightDefence9 :: Defence9
+    , knightActions9 :: [KnightAction]
+    } deriving (Show, Read)
+
+data Monster9 = MkMonster9
+    { monsterName9    :: String
+    , monsterHealth9  :: Health9
+    , monsterAttck9   :: Attack9
+    , monsterActions9 :: [MonsterAction]
+    } deriving (Show, Read)
 
 {-
 You did it! Now it is time to open pull request with your changes
