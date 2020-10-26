@@ -502,6 +502,18 @@ Implement the 'Applicative' instance for our 'List' type.
   type.
 -}
 
+instance Applicative List where
+    pure :: a -> List a
+    pure x = Cons x Empty
+
+    (<*>) :: List (a -> b) -> List a -> List b
+    Empty <*> _ = Empty
+    _ <*> Empty = Empty
+    Cons f fs <*> l = (fmap f l) +++ (fs <*> l)
+
+(+++) :: List a -> List a -> List a
+Empty +++ ys = ys
+Cons x xs +++ ys = Cons x (xs +++ ys)
 
 {- |
 =🛡= Monad
