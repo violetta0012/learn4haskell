@@ -555,14 +555,14 @@ buildWalls city = case cityCastle city of
       then city { cityCastle = CastleWithWall name } else city
         where
         countCitizensInHouse :: House -> Int
-        countCitizensInHouse OnePerson = 1
-        countCitizensInHouse TwoPeople = 2
-        countCitizensInHouse ThreePeople = 3
-        countCitizensInHouse FourPeople = 4
+        countCitizensInHouse h = case h of
+          OnePerson -> 1
+          TwoPeople -> 2
+          ThreePeople -> 3
+          FourPeople -> 4
 
         countCitizens :: [House] -> Int
-        countCitizens [] = 0
-        countCitizens (x:xs) = countCitizensInHouse x + countCitizens xs
+        countCitizens xs = sum (map countCitizensInHouse xs)
 
     _ -> city
 
@@ -1025,13 +1025,12 @@ instance Append Gold where
 
 instance Append [a] where
   append :: [a] -> [a] -> [a]
-  append xs ys = xs ++ ys
+  append = (++)
 
 instance (Append a) => Append (Maybe a) where
   append :: Maybe a -> Maybe a -> Maybe a
-  append Nothing Nothing = Nothing
-  append Nothing (Just x) = Just x
-  append (Just x) Nothing = Just x
+  append Nothing x = x
+  append x Nothing = x
   append (Just x) (Just y) = Just (append x y)
 
 {-
